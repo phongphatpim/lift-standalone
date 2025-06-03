@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>LIFF Profile Demo</title>
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+</head>
+<body>
+  <h1>Welcome to LIFF Demo</h1>
+  <button id="btn-login">Login with LINE</button>
+  <div id="profile" style="display:none;">
+    <p>ชื่อ: <span id="name"></span></p>
+    <p>LINE ID: <span id="userid"></span></p>
+  </div>
+
+  <script>
+    const liffId = '2007513899-xDd3aDWj';  // <-- แก้เป็น LIFF ID ของคุณ
+
+    async function main() {
+      await liff.init({ liffId });
+      if (!liff.isLoggedIn()) {
+        document.getElementById('btn-login').style.display = 'block';
+        document.getElementById('btn-login').addEventListener('click', () => {
+          liff.login();
+        });
+      } else {
+        document.getElementById('btn-login').style.display = 'none';
+        const profile = await liff.getProfile();
+        document.getElementById('name').textContent   = profile.displayName;
+        document.getElementById('userid').textContent = profile.userId;
+        document.getElementById('profile').style.display = 'block';
+      }
+    }
+
+    main().catch(console.error);
+  </script>
+</body>
+</html>
